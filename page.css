@@ -3,7 +3,8 @@ body {
     margin: 0 auto;
     display: block;
     overflow: auto;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
     position: absolute;
 }
 
