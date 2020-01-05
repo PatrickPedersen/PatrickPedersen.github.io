@@ -1,13 +1,8 @@
-body {
-    text-align: center;
-    margin: 0 auto;
-    display: block;
-    overflow: auto;
+.content {
+    padding-left: 0;
+    padding-right: 0;
     margin-left: auto;
     margin-right: auto;
-    position: absolute;
-}
-
-.pong-remake {
-    margin: 0 auto;
+    display: block;
+    width: fit-content;
 }
