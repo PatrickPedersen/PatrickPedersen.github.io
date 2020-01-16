@@ -1,4 +1,4 @@
-#Pong-Remake
+# Pong-Remake
 Programmerings aflevering nr.1
 
 Navn: Pong Remake Hvorfor valgte vi det navn?
