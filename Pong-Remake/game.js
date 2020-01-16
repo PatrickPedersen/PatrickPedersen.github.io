@@ -41,14 +41,6 @@ document.getElementById("b-playerVSplayer").onclick = async () => {
     togglePause();
 }
 
-// document.getElementById("b-play").onclick = async () => {
-//     document.getElementById("menu").style.display = "none";
-//     await delay(150);
-//     togglePause();
-// };
-
-console.log(aiControl)
-
 // Her fanger vi vores menu elementer og giver dem deres display styles.
 // På denne måde kan vi gemme specifikke menuer når de ikke skal bruges/vises.
 document.getElementById("b-pause").onclick = function() {
@@ -128,15 +120,6 @@ const net = {
     color : "WHITE"
 }
 
-// Her definere vi tasten "p" til vores demo af pause funktionen. Bliver fjernet senere.
-window.addEventListener('keydown', function (e) {
-var key = e.keyCode;
-if (key === 80)// p key
-{
-    togglePause();
-}
-});
-
 // Functionen for at pause spillet.
 function togglePause()
 {
@@ -149,8 +132,6 @@ function togglePause()
     }
 
 }
-
-console.log(aiControl)
 
 // Tegn en firkant, til at tegne paddles
 function drawRect(x, y, w, h, color){
@@ -215,45 +196,12 @@ function playerTwoKeyUpHandler(f) {
 document.addEventListener("keydown", playerTwoKeyDownHandler, false);
 document.addEventListener("keyup", playerTwoKeyUpHandler, false);
 
-console.log(aiControl)
-
-// Boldens start position efter reset.
-function startBall(){
-    ball.x = canvas.width/2;
-    ball.y = canvas.height/2;
-    velocityX = 5;
-    velocityY = 5;
-    ball.speed = 7;
-}
-
-// Når der scores, reset bold
-function resetBall(){
-    ball.x = canvas.width/2;
-    ball.y = canvas.height/2;
-    ball.velocityX = -ball.velocityX;
-    ball.speed = 7;
-}
-
-// Paddles start position efter reset.
-function resetPaddle(){
-    playerOne.y = (canvas.height - 100)/2;
-    playerTwo.y = (canvas.height - 100)/2;
-}
-
-// Score sættes til 0 ved spil start og hvis spiller går tilbage til menu.
-function resetScore(){
-    playerOne.score = 0;
-    playerTwo.score = 0;
-}
-
 // Draw net
 function drawNet(){
     for(let i = 0; i <= canvas.height; i+=15){
         drawRect(net.x, net.y + i, net.width, net.height, net.color);
     }
 }
-
-console.log(aiControl)
 
 // Draw text
 function drawText(text,x,y){
@@ -287,11 +235,13 @@ function update(){
     // PlayerTwo score
     if( ball.x - ball.radius < 0 ){
         playerTwo.score++;
-        resetBall();
+        startBall();
+        resetPaddle();
     } // PlayerOne Score
     else if( ball.x + ball.radius > canvas.width){
         playerOne.score++;
-        resetBall();
+        startBall();
+        resetPaddle();
     }
 
     // Hænger sammen med EventListener. Her specificerer vi hvad vi gør nå specifikke taster trykkes.
@@ -331,8 +281,6 @@ function update(){
         }
     }
 
-    console.log(aiControl)
-    
     // Giv bolden en hastighed
     ball.x += ball.velocityX;
     ball.y += ball.velocityY;
@@ -342,10 +290,8 @@ function update(){
         playerTwo.y += ((ball.y - (playerTwo.y + playerTwo.height/2)))*0.1;
     }
 
-    console.log(aiControl)
-    
     // Når bolden rammer toppen eller bunden, så vender vi Y velocity
-    if(ball.y - ball.radius < 0 || ball.y + ball.radius > canvas.height){
+    if(ball.y - ball.radius < 5 || ball.y + ball.radius > (canvas.height-5)){
         ball.velocityY = -ball.velocityY;
     }
     
@@ -371,13 +317,34 @@ function update(){
         ball.velocityY = ball.speed * Math.sin(angleRad);
         
         // Speed up bolden når den rammer en paddle
-        ball.speed += 0.1;
+        ball.speed += 0.4;
     }
 
     // Her finder vi vores frame count i millisekunder.
     var thisFrameTime = (thisLoop=new Date) - lastLoop;
     frameTime+= (thisFrameTime - frameTime) / filterStrength;
     lastLoop = thisLoop;
+}
+
+// Boldens start position efter reset.
+function startBall(){
+    ball.x = canvas.width/2;
+    ball.y = canvas.height/2;
+    velocityX = 5;
+    velocityY = 5;
+    ball.speed = 7;
+}
+
+// Paddles start position efter reset.
+function resetPaddle(){
+    playerOne.y = (canvas.height - 100)/2;
+    playerTwo.y = (canvas.height - 100)/2;
+}
+
+// Score sættes til 0 ved spil start og hvis spiller går tilbage til menu.
+function resetScore(){
+    playerOne.score = 0;
+    playerTwo.score = 0;
 }
 
 // Her calculerer vi vores actuelle FPS.
@@ -436,5 +403,3 @@ let framePerSecond = 60;
 
 // Kald spil functionen x antal gange i sekundet
 let loop = setInterval(game,1000/framePerSecond);
-
-console.log(aiControl)
